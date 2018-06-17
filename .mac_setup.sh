@@ -47,6 +47,9 @@ defaults write NSGlobalDomain PMPrintingExpandedStateForPrint -bool true
 # Save to disk (not to iCloud) by default
 defaults write NSGlobalDomain NSDocumentSaveNewDocumentsToCloud -bool false
 
+# Disable the Open Application warning dialog
+defaults write com.apple.LaunchServices LSQuarantine -bool false
+
 # Automatically quit printer app once the print jobs complete
 defaults write com.apple.print.PrintingPrefs "Quit When Finished" -bool true
 #
@@ -62,11 +65,14 @@ fi
  # systemsetup -setrestartfreeze on
  # fi
 
-# Disable Notification Center. It is terrible. Note: this function is not available
-# in macOS 10.13 High Sierra. System Integrity Check prohibits it.
-launchctl unload -w /System/Library/LaunchAgents/com.apple.notificationcenterui.plist
-# To re-enable, run:
-# launchctl load -w /System/Library/LaunchAgents/com.apple.notificationcenterui.plist && open /System/Library/CoreServices/NotificationCenter.app/
+# Disable Notification Center and remove the menu bar icon.
+launchctl unload -w /System/Library/LaunchAgents/com.apple.notificationcenterui.plist 2> /dev/null
+
+# Disable automatic capitalization as it’s annoying when typing code
+defaults write NSGlobalDomain NSAutomaticCapitalizationEnabled -bool false
+
+# Disable automatic period substitution as it’s annoying when typing code
+defaults write NSGlobalDomain NSAutomaticPeriodSubstitutionEnabled -bool false
 
 # Disable game center. Because fuck this thing.
 launchctl unload /System/Library/LaunchAgents/com.apple.gamed.plist 2> /dev/null
@@ -134,12 +140,24 @@ defaults write NSGlobalDomain AppleKeyboardUIMode -int 0
 # Disable press-and-hold for keys in favor of key repeat
 defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
 
-# Set a blazingly fast keyboard repeat rate, and make it happen more quickly.
+# Set a fast keyboard repeat rate, and make it enter that mode quicker.
 defaults write NSGlobalDomain InitialKeyRepeat -int 20
 defaults write NSGlobalDomain KeyRepeat -int 1
 
 # Disable auto-correct
 defaults write NSGlobalDomain NSAutomaticSpellingCorrectionEnabled -bool false
+
+# Set language and text formats (US formatting)
+defaults write NSGlobalDomain AppleLanguages -array "en" "nl"
+defaults write NSGlobalDomain AppleLocale -string "en_US@currency=USD"
+defaults write NSGlobalDomain AppleMeasurementUnits -string "Inches"
+defaults write NSGlobalDomain AppleMetricUnits -bool false
+
+# Set the timezone; see `sudo systemsetup -listtimezones` for other values
+sudo systemsetup -settimezone "America/Los_Angeles" > /dev/null
+
+# Stop iTunes from responding to the keyboard media keys
+#launchctl unload -w /System/Library/LaunchAgents/com.apple.rcd.plist 2> /dev/null
 
 ###############################################################################
 # Screen                                                                      #
@@ -157,6 +175,9 @@ defaults write com.apple.screencapture type -string "png"
 
 # Disable shadow in screenshots
 defaults write com.apple.screencapture disable-shadow -bool true
+
+# Finder: disable window animations and Get Info animations
+defaults write com.apple.finder DisableAllAnimations -bool true
 
 # Enable subpixel font rendering on non-Apple LCDs
 defaults write NSGlobalDomain AppleFontSmoothing -int 2
@@ -217,8 +238,9 @@ defaults write NSGlobalDomain com.apple.springing.enabled -bool true
 # Remove the spring loading delay for directories
 defaults write NSGlobalDomain com.apple.springing.delay -float 0.1
 
-# Avoid creating .DS_Store files on network volumes
+# Avoid creating .DS_Store files on network or USB volumes
 defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
+defaults write com.apple.desktopservices DSDontWriteUSBStores -bool true
 
 # Automatically open a new Finder window when a volume is mounted
 defaults write com.apple.frameworks.diskimages auto-open-ro-root -bool true
@@ -240,13 +262,16 @@ defaults write com.apple.finder OpenWindowForNewRemovableDisk -bool true
 defaults write com.apple.finder FXPreferredViewStyle -string "clmv"
 
 # Disable the warning before emptying the Trash
-# defaults write com.apple.finder WarnOnEmptyTrash -bool false
+defaults write com.apple.finder WarnOnEmptyTrash -bool false
 
 # Empty Trash securely by default
 # defaults write com.apple.finder EmptyTrashSecurely -bool true
 
 # Show the ~/Library folder
 chflags nohidden ~/Library
+
+# Show the /Volumes folder
+sudo chflags nohidden /Volumes
 
 # Remove Dropbox’s green checkmark icons in Finder
 # file=/Applications/Dropbox.app/Contents/Resources/emblem-dropbox-uptodate.icns
@@ -296,11 +321,19 @@ defaults write com.apple.dock mcx-expose-disabled -bool TRUE
 # Remove the animation when hiding/showing the Dock
 # defaults write com.apple.dock autohide-time-modifier -float 0
 
+# Show indicator lights for open applications in the Dock
+defaults write com.apple.dock show-process-indicators -bool true
+
 # Automatically hide and show the Dock
 # defaults write com.apple.dock autohide -bool true
 
 # Make Dock icons of hidden applications translucent
 defaults write com.apple.dock showhidden -bool true
+
+# Wipe all (default) app icons from the Dock
+# This is only really useful when setting up a new Mac, or if you don’t use
+# the Dock to launch apps.
+#defaults write com.apple.dock persistent-apps -array
 
 # Enable the 'reduce transparency' option. Save GPU cycles.
 defaults write com.apple.universalaccess reduceTransparency -bool true
@@ -309,6 +342,12 @@ defaults write com.apple.universalaccess reduceTransparency -bool true
 if [[ "$RUN_AS_ROOT" = true ]]; then
   sudo ln -sf /Applications/Xcode.app/Contents/Developer/Applications/Simulator.app /Applications/Simulator.app
 fi
+
+# Add a spacer to the left side of the Dock (where the applications are)
+#defaults write com.apple.dock persistent-apps -array-add '{tile-data={}; tile-type="spacer-tile";}'
+
+# Add a spacer to the right side of the Dock (where the Trash is)
+#defaults write com.apple.dock persistent-others -array-add '{tile-data={}; tile-type="spacer-tile";}'
 
 # Disable Hot Corners:
 defaults write com.apple.dock wvous-tl-corner -int 1
@@ -348,6 +387,10 @@ defaults write com.apple.dock wvous-br-corner -int 1
 # Safari & WebKit                                                             #
 ###############################################################################
 
+# Privacy: don’t send search queries to Apple
+defaults write com.apple.Safari UniversalSearchEnabled -bool false
+defaults write com.apple.Safari SuppressSearchSuggestions -bool true
+
 # Set Safari’s home page to `about:blank` for faster loading
 defaults write com.apple.Safari HomePage -string "about:blank"
 
@@ -360,6 +403,12 @@ defaults write com.apple.Safari DebugSnapshotsUpdatePolicy -int 2
 # Enable Safari’s debug menu
 defaults write com.apple.Safari IncludeInternalDebugMenu -bool true
 
+# Make Safari’s search banners default to Contains instead of Starts With
+defaults write com.apple.Safari FindOnPageMatchesWordStartsOnly -bool false
+
+# Remove useless icons from Safari’s bookmarks bar
+defaults write com.apple.Safari ProxiesInBookmarksBar "()"
+
 # Enable the Develop menu and the Web Inspector in Safari
 defaults write com.apple.Safari IncludeDevelopMenu -bool true
 defaults write com.apple.Safari WebKitDeveloperExtrasEnabledPreferenceKey -bool true
@@ -367,6 +416,32 @@ defaults write com.apple.Safari com.apple.Safari.ContentPageGroupIdentifier.WebK
 
 # Add a context menu item for showing the Web Inspector in web views
 defaults write NSGlobalDomain WebKitDeveloperExtras -bool true
+
+# Disable AutoFill
+defaults write com.apple.Safari AutoFillFromAddressBook -bool false
+defaults write com.apple.Safari AutoFillPasswords -bool false
+defaults write com.apple.Safari AutoFillCreditCardData -bool false
+defaults write com.apple.Safari AutoFillMiscellaneousForms -bool false
+
+# Warn about fraudulent websites
+defaults write com.apple.Safari WarnAboutFraudulentWebsites -bool true
+
+# Block pop-up windows
+defaults write com.apple.Safari WebKitJavaScriptCanOpenWindowsAutomatically -bool false
+defaults write com.apple.Safari com.apple.Safari.ContentPageGroupIdentifier.WebKit2JavaScriptCanOpenWindowsAutomatically -bool false
+
+# Disable auto-playing video
+#defaults write com.apple.Safari WebKitMediaPlaybackAllowsInline -bool false
+#defaults write com.apple.SafariTechnologyPreview WebKitMediaPlaybackAllowsInline -bool false
+#defaults write com.apple.Safari com.apple.Safari.ContentPageGroupIdentifier.WebKit2AllowsInlineMediaPlayback -bool false
+#defaults write com.apple.SafariTechnologyPreview com.apple.Safari.ContentPageGroupIdentifier.WebKit2AllowsInlineMediaPlayback -bool false
+
+# Enable “Do Not Track”
+defaults write com.apple.Safari SendDoNotTrackHTTPHeader -bool true
+
+# Update extensions automatically
+defaults write com.apple.Safari InstallExtensionUpdatesAutomatically -bool true
+
 
 ###############################################################################
 # Mail                                                                        #
@@ -417,6 +492,9 @@ fi
 # Only use UTF-8 in Terminal.app
 defaults write com.apple.terminal StringEncodings -array 4
 
+# Disable the annoying line marks
+defaults write com.apple.Terminal ShowLineMarks -int 0
+
 
 ###############################################################################
 # Activity Monitor                                                            #
@@ -432,7 +510,7 @@ defaults write com.apple.ActivityMonitor IconType -int 5
 defaults write com.apple.ActivityMonitor ShowCategory -int 0
 
 ###############################################################################
-# TextEdit                                                                    #
+# TextEdit, AddressBook, iCal, Disk Utility                                   #
 ###############################################################################
 
 # Use plain text mode for new TextEdit documents
@@ -441,6 +519,33 @@ defaults write com.apple.TextEdit RichText -int 0
 # Open and save files as UTF-8 in TextEdit
 defaults write com.apple.TextEdit PlainTextEncoding -int 4
 defaults write com.apple.TextEdit PlainTextEncodingForWrite -int 4
+
+# Enable the debug menu in Address Book
+defaults write com.apple.addressbook ABShowDebugMenu -bool true
+
+# Enable the debug menu in Disk Utility
+defaults write com.apple.DiskUtility DUDebugMenuEnabled -bool true
+defaults write com.apple.DiskUtility advanced-image-options -bool true
+
+# Auto-play videos when opened with QuickTime Player
+defaults write com.apple.QuickTimePlayerX MGPlayMovieOnOpen -bool true
+
+###############################################################################
+# Mac App Store                                                               #
+###############################################################################
+
+# Enable the WebKit Developer Tools in the Mac App Store
+defaults write com.apple.appstore WebKitDeveloperExtras -bool true
+
+# Enable Debug Menu in the Mac App Store
+defaults write com.apple.appstore ShowDebugMenu -bool true
+
+###############################################################################
+# Photos                                                                      #
+###############################################################################
+
+# Prevent Photos from opening automatically when devices are plugged in
+defaults -currentHost write com.apple.ImageCapture disableHotPlug -bool true
 
 ###############################################################################
 # Messages                                                                    #
