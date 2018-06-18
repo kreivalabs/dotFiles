@@ -6,15 +6,12 @@
 
 # ---------------------------------------------------------------
 # Change Prompt - Make Nicer
-# ---------------------------------------------------------------
 export PS1="\[\033[36m\]\u\[\033[m\]@\[\033[32m\]\h:\[\033[33;1m\]\w\[\033[m\]\> "
 
 # Set default blocksize for ls, df, du
-# ---------------------------------------------------------------
 export BLOCKSIZE=1k
 
 # Set PATH
-# ---------------------------------------------------------------
 export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 
 # Include alias files (if present) containing alias for ssh, etc.
