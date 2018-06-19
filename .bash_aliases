@@ -1,0 +1,62 @@
+# Bash aliases for Linux (RPi, etc)
+
+# Add commonly used commands as shortcuts
+alias q='exit'
+alias c='clear'
+alias k='kill'
+alias ka='killall'
+alias o='open'
+alias j='jobs -l'
+alias h='history'
+
+# Add better directory navitation
+alias ..='cd ..'
+alias ...='cd ../../../'
+alias ....='cd ../../../../'
+alias .....='cd ../../../../../'
+alias home='cd ~'
+alias dt='cd /home/pi/Desktop'
+alias dl='cd /home/pi/Downloads'
+
+# Better grep
+alias grep='grep --color=auto'
+alias egrep='egrep --color=auto'
+alias fgrep='fgrep --color=auto'
+
+# Add list behaviors
+alias ls='ls --color=auto'
+alias ll='ls -la'
+alias l.='ls -d .* --color=auto'
+
+# Make mount command human readable
+alias mount='mount |column -t'
+
+alias path='echo -e ${PATH//:/\\n}'
+alias ping='ping -c 10'
+alias fastping='ping -c 100 -s.2'
+alias ports='netstat -tulanp'
+
+# Add safety nets
+alias rm='rm -I --preserve-root'
+alias mv='mv -i'
+alias cp='cp -i'
+alias ln='ln -i'
+alias chown='chown --preserve-root'
+alias chmod='chmod --preserve-root'
+alias chgrp='chgrp --preserve-root'
+
+# Customize the update and upgrade behaviors
+alias apt-get='sudo apt-get'
+alias upgrade='sudo apt-get dist-upgrade'
+alias update='sudo aptget update && sudo apt-get dist-upgrade'
+
+# Fix typos
+alias cta='cat'
+alias gerp='grep'
+alias wegt='wget'
+
+# Add reboot / poweroff / shutdown behaviors
+alias reboot='sudo /sbin/reboot'
+alias poweroff='sudo /sbin/poweroff'
+alias halt='sudo /sbin/halt'
+alias shutdow='sudo /sbin/shutdown'
