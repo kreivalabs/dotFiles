@@ -17,17 +17,17 @@ export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 # Include alias files (if present) containing alias for ssh, etc.
 # ---------------------------------------------------------------
 
-if [ -f ~/.bash_aliases ]
-then
-  source ~/.bash_aliases
-fi
+#if [ -f ~/.bash_aliases ]
+#then
+ # source ~/.bash_aliases
+#fi
 
 # Include bashrc file (if present).
 
-if [ -f ~/.bashrc ]
-then
-  source ~/.bashrc
-fi
+#if [ -f ~/.bashrc ]
+#then
+ # source ~/.bashrc
+#fi
 
 # Add color to terminal - pretty it up a bit
 export CLICOLOR=1
@@ -101,7 +101,7 @@ alias dl='cd ~/Downloads'
 alias dbox='cd ~/Dropbox'
 
 # code: Go to Dropbox `code` folder
-alias code='cd ~/Dropbox/code'
+alias code='cd ~/Dropbox/Code'
 
 # py3: Use Python 3 interpreter
 alias py3='python3'
@@ -110,7 +110,7 @@ alias py3='python3'
 alias bashpro='nano ~/.bash_profile'
 
 # loadbash: update the .bash_profile in current shell
-alias loadbash='source .bash_profile
+alias loadbash='source ~/.bash_profile'
 
 # afk: lock the screen when going away from keyboard
 alias afk="/System/Library/CoreServices/Menu\ Extras/User.menu/Contents/Resources/CGSession -suspend"
