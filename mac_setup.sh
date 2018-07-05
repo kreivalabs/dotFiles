@@ -2,13 +2,22 @@
 
 # @file: mac_setup.sh
 # @author: Brendan Hogan
-# @version: 1.1
+# @version: 1.1.1
 # @update: 2018-07-05
 
 # Version history:
 
-# ver. 1.1 : update formatting; add header declarations
-# ver. 1.0 : initial build
+# Current:
+# ver. 1.1.1
+# 2018-07-05
+# fix show/hide hidden files syntax
+
+# Previous:
+
+# ver. 1.1.0 : update formatting; add header declarations
+# 2018-07-05
+
+# ver. 1.0.0 : initial build
 
 # -----------------------------------------------------------------------------
 # macOS configuration for production machines (QLab, Isadora, etc)
@@ -222,10 +231,10 @@ defaults write com.apple.finder ShowMountedServersOnDesktop -bool true
 defaults write com.apple.finder ShowRemovableMediaOnDesktop -bool true
 
 # Finder: show hidden files (dotfiles) by default
-# defaults write com.apple.finder AppleShowAllFiles -bool true
+# defaults write com.apple.finder AppleShowAllFiles YES
 
 # Finder: restore normally hidden behavior of dotfiles
-# defaults write com.apple.finder AppleShowAllFiles -bool false
+# defaults write com.apple.finder AppleShowAllFiles NO
 
 # Finder: show all filename extensions
 defaults write NSGlobalDomain AppleShowAllExtensions -bool true
