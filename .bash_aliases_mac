@@ -1,0 +1,190 @@
+# @file: .bash_aliases
+# @author: Brendan Hogan
+# @update: 2017-07-05
+
+# Aliases for macOS (10.13.5 High Sierra at time of update)
+
+# ----------------------------------------------------------
+# NAVIGATION
+# ----------------------------------------------------------
+
+# cd..: Go back 1 directory level
+alias cd..='cd ../'				                        
+
+# ..: Go back 1 directory level (alternate)
+alias ..='cd ../'				                          
+
+# ...: Go back 2 dir levels
+alias ...='cd ../../'				                      
+
+# .3: Go back 3 dir levels
+alias .3='cd ../../../'				                    
+
+# .4: Go back 4 dir levels
+alias .4='cd ../../../../'			                  
+
+# .5: Go back 5 dir levels
+alias .5='cd ../../../../../'
+
+# .6: Go back 6 dir levels
+alias .6='cd ../../../../../../'
+
+# home: Go to Home folder
+alias home='cd ~'
+
+# root: go to root folder
+alias root='cd /'
+
+# dt: Go to Desktop
+alias dt='cd ~/Desktop'
+
+# dl: Go to Downloads folder
+alias dl='cd ~/Downloads'
+
+# dbox: Go to Dropbox folder
+alias dbox='cd ~/Dropbox'
+
+# code: Go to BPH's Dropbox `code` folder
+alias code='cd ~/Dropbox/Code'
+
+# f: Opens current directory in Finder
+alias f='open -a Finder ./'
+
+# ----------------------------------------------------------
+# OPERATIONS
+# ----------------------------------------------------------
+
+# open: Send `open` command followed by file or application
+alias o='open '
+
+# c: Clear the terminal window
+alias c='clear'
+
+# q: Quit the shell
+alias q='exit'
+
+# k: send `kill` command followed by PID
+alias k='kill '
+
+# ka: send `killall` command followed by process name
+alias ka='killall '
+
+# DT: Pipe content to file on Desktop
+alias DT='tee ~/Desktop/terminalOutput.txt'
+
+
+# ----------------------------------------------------------
+# Shell behaviors
+# ----------------------------------------------------------
+
+# py3: Use Python 3 interpreter
+alias py3='python3 '
+
+# bashpro: open .bash_profile in nano
+alias bashpro='nano ~/.bash_profile'
+
+# loadbash: update the .bash_profile in current shell
+alias loadbash='source ~/.bash_profile'
+
+#reload the shell
+alias reload="exec ${SHELL} -l"
+
+
+# ----------------------------------------------------------
+# System and Application Updates
+# ----------------------------------------------------------
+
+# software: use the softwareupdate tool to check for macOS updates
+alias software='softwareupdate -l'
+
+# apps: list outdated Mac App Store updates using `mas` cli
+alias apps='mas outdated'
+
+# upgrade: upgrade installed Mac App Store apps using the `mas` cli
+alias upgrade='mas upgrade'
+ 
+# afk: lock the screen when going away from keyboard
+alias afk="/System/Library/CoreServices/Menu\ Extras/User.menu/Contents/Resources/
+CGSession -suspend"
+
+
+# ----------------------------------------------------------
+# FINDER
+# ----------------------------------------------------------
+
+# Empty the trash
+alias empty='rm -rf ~/.Trash/*'
+
+# Show/hide dotfiles
+alias show="defaults write com.apple.finder AppleShowAllFiles YES && killall Finder"	
+alias hide="defaults write com.apple.finder AppleShowAllFiles NO && killall Finder"	
+
+# ----------------------------------------------------------
+# FIX TYPOS
+# ----------------------------------------------------------
+alias cta='cat'
+alias gerp='grep'
+alias sl='ls'
+
+# lr: Full Recursive Directory Listing
+alias lr='ls -R | grep ":$" | sed -e '\''s/:$//'\'' -e '\''s/[^-][^\/]*\//--/g'\'' -e '\''s/^/   /'\'' -e '\''s/-/|/'\'' | less'
+
+# ----------------------------------------------------------
+# SYSTEM RESOURCES
+# ----------------------------------------------------------
+
+# memHogsTop, memHogsPs: Find memory hogs
+alias memHogsTop='top -l 1 -o rsize | head -20'
+alias memHogsPs='ps wwaxm -o pid,stat,vsize,rss,time,command | head -10'
+
+# cpuHogs: Find CPU hogs
+alias cpu_hogs='ps wwaxr -o pid,stat,%cpu,time,command | head -10'
+
+
+# ----------------------------------------------------------
+# NETWORKING
+# ----------------------------------------------------------
+
+# myip: Public facing IP address
+alias myip="dig +short myip.opendns.com @resolver1.opendns.com"			
+
+# netCons: Show all open TCP/IP sockets
+alias netCons='lsof -i'									
+
+# flushDNS: Flush out the DNS cache
+alias flushDNS='dscacheutil -flushcache'						
+
+# lsock: Display open sockets
+alias lsock='sudo /usr/sbin/lsof -i -P'							
+
+# lsockU: Display only open UDP sockets
+alias lsockU='sudo /usr/sbin/lsof -nP | grep UDP'					
+
+# lsockT: Display only open TCP sockets
+alias lsockT='sudo /usr/sbin/lsof -nP | grep TCP'					
+
+# ipInfo0: Get info on connections for en0
+alias ipInfo0='ipconfig getpacket en0'							
+
+# ipInfo1: Get info on connections for en1
+alias ipInfo1='ipconfig getpacket en1'							
+
+# openPorts: All listening connections
+alias openPorts='sudo lsof -i | grep LISTEN'						
+
+# showBlocked: All ipfw rules inc/ blocked IPs
+alias showBlocked='sudo ipfw list'							
+
+# ifactive: Show active network interfaces
+alias ifactive="ifconfig | pcregrep -M -o '^[^\t:]+:([^\n]|\n\t)*status: active'"	
+
+
+# ---------------------------------------------------------------
+# SYSTEMS OPERATIONS AND INFORMATION
+# ---------------------------------------------------------------
+
+# cleanupLS: Clean up LaunchServices to remove duplicates in the "Open With" menu
+alias cleanupLS="/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister -kill -r -domain local -domain system -domain user && killall Finder"
+		
+# ll: Set 'll' behavior
+alias ll='ls -lG'
