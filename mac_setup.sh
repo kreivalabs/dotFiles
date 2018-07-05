@@ -1,15 +1,30 @@
 #!/usr/bin/env bash
 
-# macOS configuration for production machines (QLab, Isadora, etc)
+# @file: mac_setup.sh
+# @author: Brendan Hogan
+# @version: 1.1
+# @update: 2018-07-05
 
+# Version history:
+
+# ver. 1.1 : update formatting; add header declarations
+# ver. 1.0 : initial build
+
+# -----------------------------------------------------------------------------
+# macOS configuration for production machines (QLab, Isadora, etc)
+# With inspiration from https://github.com/geerlingguy and http://figure53.com
+# -----------------------------------------------------------------------------
+
+# -----------------------------------------------------------------------------
 # This configuration sets up preferences and configurations for all the built-in
 # services and apps of macOS. Third-party app config should be done elsewhere.
+# -----------------------------------------------------------------------------
 
+# -----------------------------------------------------------------------------
 # Options:
 #   --no-restart: Don't restart any apps or services after running the script.
 
-# @author Brendan Hogan, 2018. With inspiration from https://github.com/geerlingguy and http://figure53.com
-
+# -----------------------------------------------------------------------------
 # Warn that some commands will not be run if the script is not run as root.
 if [[ $EUID -ne 0 ]]; then
   RUN_AS_ROOT=false
@@ -19,10 +34,11 @@ else
   # Update existing `sudo` timestamp until `macOS_setup` has finished
   while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 fi
+# -----------------------------------------------------------------------------
 
-###############################################################################
-# General UI/UX                                                               #
-###############################################################################
+# -----------------------------------------------------------------------------
+# General UI/UX                                                               
+# -----------------------------------------------------------------------------
 
 # Set standby delay to 24 hours (default is 1 hour)
 # You can check current values with `pmset -g`.
@@ -86,9 +102,9 @@ defaults write NSGlobalDomain NSAutomaticDashSubstitutionEnabled -bool false
 # Set background to dark-grey color
 # sqlite3 ~/Library/Application\ Support/Dock/desktoppicture.db "update data set value = '/Library/Desktop Pictures/Solid Colors/Solid Gray Dark.png'"
 
-###############################################################################
-# SSD-specific tweaks                                                         #
-###############################################################################
+# -----------------------------------------------------------------------------
+# SSD-specific tweaks                                                         
+# -----------------------------------------------------------------------------
 
 if [[ "$RUN_AS_ROOT" = true ]]; then
   # Turn off Time Machine
@@ -113,9 +129,9 @@ if [[ "$RUN_AS_ROOT" = true ]]; then
   sudo pmset -a sms 0
 fi
 
-###############################################################################
-# Trackpad, mouse, keyboard, Bluetooth accessories, and input                 #
-###############################################################################
+# -----------------------------------------------------------------------------
+# Trackpad, mouse, keyboard, Bluetooth accessories, and input                 
+# -----------------------------------------------------------------------------
 
 # Trackpad: map bottom right corner to right-click
 # defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad TrackpadCornerSecondaryClick -int 2
@@ -159,9 +175,9 @@ sudo systemsetup -settimezone "America/Los_Angeles" > /dev/null
 # Stop iTunes from responding to the keyboard media keys
 #launchctl unload -w /System/Library/LaunchAgents/com.apple.rcd.plist 2> /dev/null
 
-###############################################################################
-# Screen                                                                      #
-###############################################################################
+# -----------------------------------------------------------------------------
+# Screen                                                                      
+# -----------------------------------------------------------------------------
 
 # Require password immediately after sleep or screen saver begins
 defaults write com.apple.screensaver askForPassword -int 1
@@ -190,9 +206,9 @@ defaults write com.apple.spaces spans-displays -bool TRUE
 #   sudo defaults write /Library/Preferences/com.apple.windowserver DisplayResolutionEnabled -bool true
 # fi
 
-###############################################################################
-# Finder                                                                      #
-###############################################################################
+# -----------------------------------------------------------------------------
+# Finder                                                                      
+# -----------------------------------------------------------------------------
 
 # Set Desktop as the default location for new Finder windows
 # For other paths, use `PfLo` and `file:///full/path/here/`
@@ -285,9 +301,9 @@ defaults write com.apple.finder FXInfoPanesExpanded -dict \
   Preview -bool false \
   Privileges -bool true
 
-###############################################################################
-# Dock, Dashboard, and hot corners                                            #
-###############################################################################
+# -----------------------------------------------------------------------------
+# Dock, Dashboard, and hot corners                                            
+# -----------------------------------------------------------------------------
 
 # Set the icon size of Dock items
 defaults write com.apple.dock tilesize -int 30
@@ -383,9 +399,9 @@ defaults write com.apple.dock wvous-br-corner -int 1
 # defaults write com.apple.dock wvous-bl-corner -int 4
 # defaults write com.apple.dock wvous-bl-modifier -int 0
 
-###############################################################################
-# Safari & WebKit                                                             #
-###############################################################################
+# -----------------------------------------------------------------------------
+# Safari & WebKit                                                             
+# -----------------------------------------------------------------------------
 
 # Privacy: don’t send search queries to Apple
 defaults write com.apple.Safari UniversalSearchEnabled -bool false
@@ -442,10 +458,9 @@ defaults write com.apple.Safari SendDoNotTrackHTTPHeader -bool true
 # Update extensions automatically
 defaults write com.apple.Safari InstallExtensionUpdatesAutomatically -bool true
 
-
-###############################################################################
-# Mail                                                                        #
-###############################################################################
+# -----------------------------------------------------------------------------
+# Mail                                                                        
+# -----------------------------------------------------------------------------
 
 # Disable send and reply animations in Mail.app
 defaults write com.apple.mail DisableReplyAnimations -bool true
@@ -468,9 +483,9 @@ defaults write com.apple.mail DraftsViewerAttributes -dict-add "DisplayInThreade
 # Disable spell checking
 # defaults write com.apple.mail SpellCheckingBehavior -string "NoSpellCheckingEnabled"
 
-###############################################################################
-# Spotlight                                                                   #
-###############################################################################
+# -----------------------------------------------------------------------------
+# Spotlight                                                                   
+# -----------------------------------------------------------------------------
 
 if [[ "$RUN_AS_ROOT" = true ]]; then
   # Disable Spotlight indexing for any volume that gets mounted and has not yet
@@ -485,9 +500,9 @@ fi
 # or, turn off Spotlight completely (better option for show machines)
 # sudo mdutil -a -i off
 
-###############################################################################
-# Terminal                                                                    #
-###############################################################################
+# -----------------------------------------------------------------------------
+# Terminal                                                                    
+# -----------------------------------------------------------------------------
 
 # Only use UTF-8 in Terminal.app
 defaults write com.apple.terminal StringEncodings -array 4
@@ -495,10 +510,9 @@ defaults write com.apple.terminal StringEncodings -array 4
 # Disable the annoying line marks
 defaults write com.apple.Terminal ShowLineMarks -int 0
 
-
-###############################################################################
-# Activity Monitor                                                            #
-###############################################################################
+# -----------------------------------------------------------------------------
+# Activity Monitor                                                            
+# -----------------------------------------------------------------------------
 
 # Show the main window when launching Activity Monitor
 defaults write com.apple.ActivityMonitor OpenMainWindow -bool true
@@ -509,9 +523,9 @@ defaults write com.apple.ActivityMonitor IconType -int 5
 # Show all processes in Activity Monitor
 defaults write com.apple.ActivityMonitor ShowCategory -int 0
 
-###############################################################################
-# TextEdit, AddressBook, iCal, Disk Utility                                   #
-###############################################################################
+# -----------------------------------------------------------------------------
+# TextEdit, AddressBook, iCal, Disk Utility                                   
+# -----------------------------------------------------------------------------
 
 # Use plain text mode for new TextEdit documents
 defaults write com.apple.TextEdit RichText -int 0
@@ -530,9 +544,9 @@ defaults write com.apple.DiskUtility advanced-image-options -bool true
 # Auto-play videos when opened with QuickTime Player
 defaults write com.apple.QuickTimePlayerX MGPlayMovieOnOpen -bool true
 
-###############################################################################
-# Mac App Store                                                               #
-###############################################################################
+# -----------------------------------------------------------------------------
+# Mac App Store                                                               
+# -----------------------------------------------------------------------------
 
 # Enable the WebKit Developer Tools in the Mac App Store
 defaults write com.apple.appstore WebKitDeveloperExtras -bool true
@@ -540,16 +554,16 @@ defaults write com.apple.appstore WebKitDeveloperExtras -bool true
 # Enable Debug Menu in the Mac App Store
 defaults write com.apple.appstore ShowDebugMenu -bool true
 
-###############################################################################
-# Photos                                                                      #
-###############################################################################
+# -----------------------------------------------------------------------------
+# Photos                                                                      
+# -----------------------------------------------------------------------------
 
 # Prevent Photos from opening automatically when devices are plugged in
 defaults -currentHost write com.apple.ImageCapture disableHotPlug -bool true
 
-###############################################################################
-# Messages                                                                    #
-###############################################################################
+# -----------------------------------------------------------------------------
+# Messages                                                                    
+# -----------------------------------------------------------------------------
 
 # Disable automatic emoji substitution (i.e. use plain text smileys)
 defaults write com.apple.messageshelper.MessageController SOInputLineSettings -dict-add "automaticEmojiSubstitutionEnablediMessage" -bool false
@@ -560,9 +574,9 @@ defaults write com.apple.messageshelper.MessageController SOInputLineSettings -d
 # Disable continuous spell checking
 defaults write com.apple.messageshelper.MessageController SOInputLineSettings -dict-add "continuousSpellCheckingEnabled" -bool false
 
-###############################################################################
-# Google Chrome                                                               #
-###############################################################################
+# -----------------------------------------------------------------------------
+# Google Chrome                                                               
+# -----------------------------------------------------------------------------
 
 # Disable sensitive and senseless swipe-based navigation
 # defaults write com.google.Chrome AppleEnableSwipeNavigateWithScrolls -bool false
@@ -570,9 +584,9 @@ defaults write com.apple.messageshelper.MessageController SOInputLineSettings -d
 # Use the system print dialog
 # defaults write com.google.Chrome DisablePrintPreview -bool true
 
-###############################################################################
-# Kill/restart affected applications                                          #
-###############################################################################
+# -----------------------------------------------------------------------------
+# Kill/restart affected applications                                          
+# -----------------------------------------------------------------------------
 
 # Restart affected applications if `--no-restart` flag is not present.
 if [[ ! ($* == *--no-restart*) ]]; then

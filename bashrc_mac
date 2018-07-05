@@ -1,8 +1,16 @@
 # @file: .bashrc
 # @author: Brendan Hogan
+# @version: 1.0
 # @update: 2018-07-05
 
+# Version history
+
+# ver 1.0 : initial build
+
 # hat tip: http://osxdaily.com/2011/10/03/add-a-separator-time-stamp-between-terminal-commands-to-increase-readability/
+
+# -----------------------------------------------------------------------------
+
 # Customize the appearance of the prompt
 
 # Fill with minuses for readability
@@ -70,6 +78,8 @@ PROMPT_COMMAND=prompt_command
 
 
 # -----------------------------------------------------------------------------
+# Terminal color behavior
+# -----------------------------------------------------------------------------
 
 # Add color to terminal LS behavior - pretty it up a bit
 export CLICOLOR=1
@@ -85,7 +95,8 @@ alias ls='ls -GFh'
 
 
 # ----------------------------------------------------------------------------- 
-
+# Update scheduling
+# -----------------------------------------------------------------------------
 # Tell Homebrew to not autoupdate every time it is run (just once a week)
 export HOMEBREW_AUTO_UPDATE_SECS=604800
 export PATH="/usr/local/sbin:$PATH"

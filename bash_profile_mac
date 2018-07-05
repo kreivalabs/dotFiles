@@ -1,6 +1,12 @@
 # @file: .bash_profile
 # @author: brendanhogan
+# @version: 1.1
 # @update: 2018-07-05
+
+# Version history:
+
+# ver. 1.1 : update formatting and header declarations
+# ver. 1.0 : initial build
 
 # with inspiration from https://github.com/mathiasbynens and
 # https://github.com/geerlingguy
@@ -14,7 +20,7 @@ export BLOCKSIZE=1k
 export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 
 
-# -------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 # Include aliases (if present).
 
 if [ -f ~/.bash_aliases ]
