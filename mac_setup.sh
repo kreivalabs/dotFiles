@@ -40,7 +40,7 @@ if [[ $EUID -ne 0 ]]; then
   printf "Certain commands will not be run without sudo privileges. To run as root, run the same command prepended with 'sudo', for example: $ sudo $0\n\n" | fold -s -w 80
 else
   RUN_AS_ROOT=true
-  # Update existing `sudo` timestamp until `macOS_setup` has finished
+  # Update existing `sudo` timestamp until `mac_setup` has finished
   while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 fi
 # -----------------------------------------------------------------------------
@@ -84,8 +84,8 @@ if [[ "$RUN_AS_ROOT" = true ]]; then
   sudo defaults write /Library/Preferences/com.apple.loginwindow AdminHostInfo HostName
 fi
 
-# Restart automatically if the computer freezes. OK for offline work, perhaps not best for 
-# monitored systems running shows.
+# Restart automatically if the computer freezes. 
+# OK for offline work, perhaps not best for monitored systems running shows.
 # if [[ "$RUN_AS_ROOT" = true ]]; then
  # systemsetup -setrestartfreeze on
  # fi
