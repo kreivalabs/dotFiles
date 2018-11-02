@@ -25,8 +25,9 @@
 # -----------------------------------------------------------------------------
 
 # -----------------------------------------------------------------------------
-# This configuration sets up preferences and configurations for all the built-in
-# services and apps of macOS. Third-party app config should be done elsewhere.
+# This configuration sets up preferences and configurations for all the
+# built-in services and apps of macOS. Third-party app config should be done 
+# elsewhere.
 # -----------------------------------------------------------------------------
 
 # -----------------------------------------------------------------------------
